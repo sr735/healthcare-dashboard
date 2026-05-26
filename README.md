@@ -329,5 +329,3 @@ healthcare-dashboard/
     ├── requirements.txt
     └── requirements-test.txt
 ```
-
-> **Note:** If you see a `backend/app/{api` directory in your file explorer, it is an empty artefact from a shell brace-expansion error and can be safely deleted.
