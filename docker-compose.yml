@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: healthdash
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d healthdash"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      ASYNC_DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/healthdash
+      SYNC_DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/healthdash
+      APP_ENV: development
+      DEBUG: "true"
+      SECRET_KEY: dev-secret-key-change-in-production
+      CORS_ORIGINS: "http://localhost:5173,http://localhost:3000,http://frontend:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # VITE_ vars are baked in at build time. With nginx proxying /api/ → backend,
+        # a relative path (/api/v1) works correctly for the browser.
+        VITE_API_URL: /api/v1
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

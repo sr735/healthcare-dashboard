@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files (never commit)
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Docker volumes
+postgres_data/

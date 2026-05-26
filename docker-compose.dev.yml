@@ -1,0 +1,25 @@
+# Development overlay — apply on top of docker-compose.yml for hot reloading:
+#
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# What changes vs. the base file:
+#   backend  — already uses uvicorn --reload + ./backend:/app volume mount (no change needed)
+#   frontend — switches from the nginx production build to the Vite dev server
+#              so edits to src/ are reflected in the browser instantly via HMR
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development        # use the dev stage, not the nginx production stage
+    ports:
+      - "5173:5173"             # Vite dev server (instead of nginx on :3000)
+    volumes:
+      - ./frontend:/app          # mount source so HMR picks up file changes
+      - /app/node_modules        # anonymous volume keeps container node_modules intact
+    environment:
+      - VITE_API_URL=http://localhost:8000/api/v1   # point directly at backend
+    depends_on:
+      backend:
+        condition: service_healthy
