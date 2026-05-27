@@ -1,9 +1,17 @@
+from __future__ import annotations
+
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
+
 from sqlalchemy import String, DateTime, Text, ForeignKey, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.db.session import Base
+
+if TYPE_CHECKING:
+    from app.models.patient import Patient
 
 
 class PatientNote(Base):
@@ -25,4 +33,4 @@ class PatientNote(Base):
     )
 
     # Relationship back to patient (optional, for eager loading)
-    patient: Mapped["Patient"] = relationship("Patient", back_populates="notes")  # type: ignore[name-defined]
+    patient: Mapped[Patient] = relationship("Patient", back_populates="notes")
