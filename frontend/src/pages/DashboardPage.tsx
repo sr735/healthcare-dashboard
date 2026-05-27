@@ -170,7 +170,7 @@ export default function DashboardPage() {
   const patients = data?.items ?? []
   const total = data?.total ?? 0
 
-  const { active, critical, inactive, discharged, recentPatients, statusData, genderData } =
+  const { active, critical, discharged, recentPatients, statusData, genderData } =
     useMemo(() => {
       const active     = patients.filter((p) => p.status === 'active').length
       const critical   = patients.filter((p) => p.status === 'critical').length

@@ -22,7 +22,7 @@ interface PatientStatusChipProps {
 const PatientStatusChip = memo(function PatientStatusChip({
   status, size = 'small',
 }: PatientStatusChipProps) {
-  const { label, color } = STATUS_CONFIG[status] ?? STATUS_CONFIG.inactive
+  const { label, color } = STATUS_CONFIG[status]
   return <Chip label={label} color={color} size={size} variant="filled" />
 })
 

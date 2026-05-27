@@ -101,8 +101,7 @@ apiClient.interceptors.response.use(
     // All other HTTP errors (or 422 with unexpected detail shape)
     const message =
       (typeof data?.detail === 'string' ? data.detail : null) ??
-      error.message ??
-      'An unexpected error occurred'
+      error.message
 
     return Promise.reject(new ApiError(message, status))
   },
