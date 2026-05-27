@@ -70,14 +70,12 @@ test.describe('Patient CRUD', () => {
     await goToPatients(page)
 
     await page.getByPlaceholder(/search/i).fill(TEST_LAST_NAME)
-    // Wait for the debounced API request to resolve rather than a fixed sleep
-    await page.waitForResponse(
-      (resp) => resp.url().includes('/api/') && resp.status() === 200,
-      { timeout: 10_000 },
-    )
 
-    const row = page.locator('.MuiDataGrid-row').first()
-    await expect(row).toBeVisible({ timeout: 10_000 })
+    // Filter the locator to the specific row — this self-waits for the grid to
+    // render the search result (handles debounce + API latency) and keeps the
+    // element reference stable so dblclick doesn't hit a stale node.
+    const row = page.locator('.MuiDataGrid-row').filter({ hasText: TEST_LAST_NAME }).first()
+    await expect(row).toBeVisible({ timeout: 15_000 })
     await row.dblclick()
 
     await expect(page).toHaveURL(/\/patients\/.+/, { timeout: 8_000 })
@@ -86,8 +84,11 @@ test.describe('Patient CRUD', () => {
     const match = url.match(/\/patients\/([\w-]+)/)
     createdPatientId = match?.[1] ?? null
 
-    await expect(page.getByText(TEST_FIRST_NAME)).toBeVisible()
-    await expect(page.getByText(TEST_LAST_NAME)).toBeVisible()
+    // Scope to the h4 heading to avoid a strict-mode violation: the breadcrumb
+    // link also contains the patient name, so getByText() matches two elements.
+    await expect(
+      page.getByRole('heading', { name: new RegExp(TEST_FIRST_NAME, 'i') })
+    ).toBeVisible({ timeout: 5_000 })
   })
 
   test('Detail — shows patient information sections', async ({ page }) => {
