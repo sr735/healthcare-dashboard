@@ -75,9 +75,9 @@ describe('PatientFormDialog', () => {
 
   // ── Visibility ──────────────────────────────────────────────────────────
 
-  it('renders dialog title "Add Patient" in create mode', () => {
+  it('renders dialog title "Add New Patient" in create mode', () => {
     renderDialog({ mode: 'create' })
-    expect(screen.getByText('Add Patient')).toBeInTheDocument()
+    expect(screen.getByText('Add New Patient')).toBeInTheDocument()
   })
 
   it('renders dialog title "Edit Patient" in edit mode', () => {
@@ -110,7 +110,7 @@ describe('PatientFormDialog', () => {
 
   it('does not render when open is false', () => {
     renderDialog({ open: false })
-    expect(screen.queryByText('Add Patient')).toBeNull()
+    expect(screen.queryByText('Add New Patient')).toBeNull()
   })
 
   // ── Required field validation ────────────────────────────────────────────
@@ -122,7 +122,7 @@ describe('PatientFormDialog', () => {
     await user.type(screen.getByLabelText(/last name/i), 'Smith')
     await user.type(screen.getByLabelText(/date of birth/i), '1990-05-20')
 
-    await user.click(screen.getByRole('button', { name: /save/i }))
+    await user.click(screen.getByRole('button', { name: /create patient|save changes/i }))
 
     await waitFor(() => {
       expect(screen.getByText('First name is required')).toBeInTheDocument()
@@ -136,7 +136,7 @@ describe('PatientFormDialog', () => {
     await user.type(screen.getByLabelText(/first name/i), 'Jane')
     await user.type(screen.getByLabelText(/date of birth/i), '1990-05-20')
 
-    await user.click(screen.getByRole('button', { name: /save/i }))
+    await user.click(screen.getByRole('button', { name: /create patient|save changes/i }))
 
     await waitFor(() => {
       expect(screen.getByText('Last name is required')).toBeInTheDocument()
@@ -150,7 +150,7 @@ describe('PatientFormDialog', () => {
     await user.type(screen.getByLabelText(/first name/i), 'Jane')
     await user.type(screen.getByLabelText(/last name/i), 'Smith')
 
-    await user.click(screen.getByRole('button', { name: /save/i }))
+    await user.click(screen.getByRole('button', { name: /create patient|save changes/i }))
 
     await waitFor(() => {
       expect(screen.getByText('Date of birth is required')).toBeInTheDocument()
@@ -168,7 +168,7 @@ describe('PatientFormDialog', () => {
     await user.type(screen.getByLabelText(/date of birth/i), '1990-05-20')
     await user.type(screen.getByLabelText(/email/i), 'not-an-email')
 
-    await user.click(screen.getByRole('button', { name: /save/i }))
+    await user.click(screen.getByRole('button', { name: /create patient|save changes/i }))
 
     await waitFor(() => {
       expect(screen.getByText(/valid email/i)).toBeInTheDocument()
@@ -184,7 +184,7 @@ describe('PatientFormDialog', () => {
     await user.type(screen.getByLabelText(/date of birth/i), '1990-05-20')
     await user.type(screen.getByLabelText(/zip/i), 'BADZIP')
 
-    await user.click(screen.getByRole('button', { name: /save/i }))
+    await user.click(screen.getByRole('button', { name: /create patient|save changes/i }))
 
     await waitFor(() => {
       expect(screen.getByText(/ZIP code must be 5 digits/i)).toBeInTheDocument()
