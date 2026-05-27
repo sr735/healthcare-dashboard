@@ -11,8 +11,9 @@ from app.db.seed import seed_patients
 from app.api.v1 import api_router
 from app.middleware import LoggingMiddleware
 
-# Import all models so Alembic / Base.metadata can see them
-import app.models  # noqa: F401
+# Import all models so Alembic / Base.metadata can see them.
+# Aliased to avoid shadowing the `app` variable (FastAPI instance) defined below.
+from app import models as _models  # noqa: F401
 
 settings = get_settings()
 
@@ -81,7 +82,7 @@ logger = logging.getLogger("healthdash.app")
 # ---- Lifespan ---------------------------------------------------------------
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI):  # type: ignore[misc]
     # Startup
     logger.info("Starting HealthDash API (env=%s)", settings.app_env)
 

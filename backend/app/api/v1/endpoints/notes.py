@@ -44,6 +44,10 @@ async def list_notes(
     patient = await _get_patient_or_404(patient_id, patient_service)
     notes, total = await note_service.get_all(patient_id)
 
+    # Convert ORM objects to Pydantic response models up-front so the list is
+    # uniformly typed as list[NoteResponse] throughout.
+    note_responses = [NoteResponse.model_validate(n) for n in notes]
+
     # Inject medical_notes from the patient profile as a pinned synthetic note
     if patient.medical_notes:
         synthetic = NoteResponse(
@@ -54,10 +58,9 @@ async def list_notes(
             created_at=patient.created_at,
             note_type="medical_background",
         )
-        items = [synthetic] + list(notes)
-        return NoteListResponse(items=items, total=total + 1)
+        return NoteListResponse(items=[synthetic] + note_responses, total=total + 1)
 
-    return NoteListResponse(items=list(notes), total=total)
+    return NoteListResponse(items=note_responses, total=total)
 
 
 @router.post(
