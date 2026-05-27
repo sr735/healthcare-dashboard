@@ -104,7 +104,7 @@ test.describe('Patient CRUD', () => {
 
     // Edit button lives on the detail page
     await page.goto(`/patients/${createdPatientId}`)
-    await expect(page.getByText(TEST_FIRST_NAME)).toBeVisible({ timeout: 8_000 })
+    await expect(page.getByRole('heading', { name: new RegExp(TEST_FIRST_NAME, 'i') })).toBeVisible({ timeout: 8_000 })
 
     await page.getByRole('button', { name: /^edit$/i }).click()
 
@@ -123,7 +123,7 @@ test.describe('Patient CRUD', () => {
     if (!createdPatientId) test.skip()
 
     await page.goto(`/patients/${createdPatientId}`)
-    await expect(page.getByText(TEST_FIRST_NAME)).toBeVisible({ timeout: 8_000 })
+    await expect(page.getByRole('heading', { name: new RegExp(TEST_FIRST_NAME, 'i') })).toBeVisible({ timeout: 8_000 })
 
     // Click Delete → confirmation dialog appears
     await page.getByRole('button', { name: /^delete$/i }).click()
