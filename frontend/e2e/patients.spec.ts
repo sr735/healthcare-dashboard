@@ -50,13 +50,13 @@ test.describe('Patient CRUD', () => {
 
     await page.getByRole('button', { name: /add patient/i }).click()
     await expect(page.getByRole('dialog')).toBeVisible()
-    await expect(page.getByText('Add Patient')).toBeVisible()
+    await expect(page.getByText('Add New Patient')).toBeVisible()
 
     await page.getByLabel(/first name/i).fill(TEST_FIRST_NAME)
     await page.getByLabel(/last name/i).fill(TEST_LAST_NAME)
     await page.getByLabel(/date of birth/i).fill('1988-07-15')
 
-    await page.getByRole('button', { name: /save/i }).click()
+    await page.getByRole('button', { name: /create patient|save changes/i }).click()
 
     await expect(page.getByRole('dialog')).not.toBeVisible({ timeout: 10_000 })
 
@@ -90,8 +90,8 @@ test.describe('Patient CRUD', () => {
     if (!createdPatientId) test.skip()
 
     await page.goto(`/patients/${createdPatientId}`)
-    await expect(page.getByText(/personal information/i)).toBeVisible({ timeout: 8_000 })
-    await expect(page.getByText(/clinical notes/i)).toBeVisible({ timeout: 8_000 })
+    await expect(page.getByText(/demographics/i)).toBeVisible({ timeout: 8_000 })
+    await expect(page.getByText(/clinical/i)).toBeVisible({ timeout: 8_000 })
   })
 
   test('Edit — opens edit dialog pre-filled with patient data', async ({ page }) => {
@@ -124,10 +124,11 @@ test.describe('Patient CRUD', () => {
     await page.getByRole('button', { name: /^delete$/i }).click()
 
     // Confirm in the MUI confirmation dialog
-    const confirmBtn = page.getByRole('button', { name: /confirm|yes|delete patient/i })
-    if (await confirmBtn.isVisible({ timeout: 3_000 }).catch(() => false)) {
-      await confirmBtn.click()
-    }
+    // The confirmation dialog has a 'Delete' confirm button — scope to dialog to
+    // avoid matching the page-level Delete button that opened the dialog.
+    const dialog = page.getByRole('dialog')
+    await expect(dialog).toBeVisible({ timeout: 5_000 })
+    await dialog.getByRole('button', { name: /^delete$/i }).click()
 
     // Should navigate back to /patients after deletion
     await expect(page).toHaveURL(/\/patients$/, { timeout: 8_000 })
@@ -149,7 +150,7 @@ test.describe('Validation — PatientFormDialog', () => {
     await page.getByRole('button', { name: /add patient/i }).click()
     await expect(page.getByRole('dialog')).toBeVisible()
 
-    await page.getByRole('button', { name: /save/i }).click()
+    await page.getByRole('button', { name: /create patient|save changes/i }).click()
 
     await expect(page.getByText('First name is required')).toBeVisible()
     await expect(page.getByText('Last name is required')).toBeVisible()
@@ -165,7 +166,7 @@ test.describe('Validation — PatientFormDialog', () => {
     await page.getByLabel(/date of birth/i).fill('1990-01-01')
     await page.getByLabel(/email/i).fill('bad-email')
 
-    await page.getByRole('button', { name: /save/i }).click()
+    await page.getByRole('button', { name: /create patient|save changes/i }).click()
 
     await expect(page.getByText(/valid email/i)).toBeVisible()
   })
