@@ -74,4 +74,14 @@ export default tseslint.config(
       '@typescript-eslint/no-deprecated': 'warn',
     },
   },
+
+  // main.tsx is the app entry point — ThemedApp is intentionally defined here
+  // (not exported) so it renders inside QueryClientProvider. Fast Refresh
+  // doesn't apply to entry-point files.
+  {
+    files: ['src/main.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 )

@@ -17,9 +17,6 @@ const queryClient = new QueryClient({
   },
 })
 
-// ThemedApp is intentionally defined in main.tsx (not exported) because it
-// must live inside QueryClientProvider. Fast Refresh is not needed here.
-// eslint-disable-next-line react-refresh/only-export-components
 /**
  * Thin wrapper that reads themeMode from the Zustand store and recreates the
  * MUI theme whenever it changes.  Must live inside QueryClientProvider so the
