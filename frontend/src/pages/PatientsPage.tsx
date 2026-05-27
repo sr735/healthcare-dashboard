@@ -205,12 +205,14 @@ export default function PatientsPage() {
             setSearchInput(e.target.value)
             setPatientFilters({ search: e.target.value })
           }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon fontSize="small" color="action" />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon fontSize="small" color="action" />
+                </InputAdornment>
+              ),
+            },
           }}
           sx={{ minWidth: 260, flexGrow: 1 }}
         />

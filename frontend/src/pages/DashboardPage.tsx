@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react'
 import {
-  Box, Typography, Grid, Card, CardContent, CardHeader,
+  Box, Typography, Grid2 as Grid, Card, CardContent, CardHeader,
   Skeleton, Button, Stack, useTheme,
 } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
@@ -167,7 +167,7 @@ export default function DashboardPage() {
   // Load enough for accurate stats. In a larger app this would be a /stats endpoint.
   const { data, isLoading } = usePatients({ page: 1, page_size: 100 })
 
-  const patients = data?.items ?? []
+  const patients = useMemo(() => data?.items ?? [], [data?.items])
   const total = data?.total ?? 0
 
   const { active, critical, discharged, recentPatients, statusData, genderData } =
@@ -208,23 +208,23 @@ export default function DashboardPage() {
 
       {/* ---- Stat cards ---- */}
       <Grid container spacing={3} mb={4}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3}>
           <StatCard title="Total Patients" value={total}      icon={<PeopleIcon />}       color="#1976D2" loading={isLoading} />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3}>
           <StatCard title="Active"          value={active}    icon={<CheckCircleIcon />}  color="#43A047" loading={isLoading} />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3}>
           <StatCard title="Critical"        value={critical}  icon={<WarningAmberIcon />} color="#EF5350" loading={isLoading} />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={3}>
           <StatCard title="Discharged"      value={discharged} icon={<FavoriteIcon />}   color="#26A69A" loading={isLoading} />
         </Grid>
       </Grid>
 
       {/* ---- Charts ---- */}
       <Grid container spacing={3} mb={4}>
-        <Grid item xs={12} md={6}>
+        <Grid xs={12} md={6}>
           <Card>
             <CardHeader
               title={<Typography variant="subtitle1" fontWeight={700}>Patient Status</Typography>}
@@ -235,7 +235,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid xs={12} md={6}>
           <Card>
             <CardHeader
               title={<Typography variant="subtitle1" fontWeight={700}>Gender Distribution</Typography>}

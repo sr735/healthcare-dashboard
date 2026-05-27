@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, Grid, TextField, MenuItem, FormControl, InputLabel,
+  Button, Grid2 as Grid, TextField, MenuItem, FormControl, InputLabel,
   Select, Divider, Typography, CircularProgress, Chip, Box,
   IconButton, InputAdornment, Alert,
 } from '@mui/material'
@@ -315,41 +315,40 @@ export default function PatientFormDialog({
         <Grid container spacing={2}>
 
           {/* ── Demographics ── */}
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <Typography variant="subtitle2" color="text.secondary" fontWeight={700} mb={1}>
               DEMOGRAPHICS
             </Typography>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth required label="First Name" size="small"
               value={form.first_name}
               onChange={txt('first_name')}
               error={Boolean(errors.first_name)}
               helperText={errors.first_name}
-              inputProps={{ maxLength: 100 }}
+              slotProps={{ htmlInput: { maxLength: 100 } }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth required label="Last Name" size="small"
               value={form.last_name}
               onChange={txt('last_name')}
               error={Boolean(errors.last_name)}
               helperText={errors.last_name}
-              inputProps={{ maxLength: 100 }}
+              slotProps={{ htmlInput: { maxLength: 100 } }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth required label="Date of Birth" size="small" type="date"
-              InputLabelProps={{ shrink: true }}
+              slotProps={{ inputLabel: { shrink: true }, htmlInput: { max: new Date().toISOString().split('T')[0] } }}
               value={form.date_of_birth}
               onChange={txt('date_of_birth')}
               error={Boolean(errors.date_of_birth)}
               helperText={errors.date_of_birth}
-              inputProps={{ max: new Date().toISOString().split('T')[0] }}
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid xs={12} sm={3}>
             <FormControl fullWidth size="small" required>
               <InputLabel>Gender</InputLabel>
               <Select label="Gender" value={form.gender}
@@ -362,7 +361,7 @@ export default function PatientFormDialog({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid xs={12} sm={3}>
             <FormControl fullWidth size="small">
               <InputLabel>Blood Type</InputLabel>
               <Select label="Blood Type" value={form.blood_type}
@@ -376,15 +375,15 @@ export default function PatientFormDialog({
             </FormControl>
           </Grid>
 
-          <Grid item xs={12}><Divider /></Grid>
+          <Grid xs={12}><Divider /></Grid>
 
           {/* ── Contact ── */}
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <Typography variant="subtitle2" color="text.secondary" fontWeight={700} mb={1}>
               CONTACT
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth label="Email" size="small" type="email"
               value={form.email}
               onChange={txt('email')}
@@ -392,7 +391,7 @@ export default function PatientFormDialog({
               helperText={errors.email ?? 'e.g. patient@example.com'}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth label="Phone" size="small"
               value={form.phone}
               onChange={txt('phone')}
@@ -400,39 +399,39 @@ export default function PatientFormDialog({
               helperText={errors.phone ?? 'e.g. +1 (555) 000-0000'}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <TextField fullWidth label="Address" size="small"
               value={form.address} onChange={txt('address')} />
           </Grid>
-          <Grid item xs={12} sm={5}>
+          <Grid xs={12} sm={5}>
             <TextField fullWidth label="City" size="small"
               value={form.city} onChange={txt('city')} />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid xs={12} sm={4}>
             <TextField fullWidth label="State" size="small"
               value={form.state} onChange={txt('state')}
-              inputProps={{ maxLength: 50 }}
+              slotProps={{ htmlInput: { maxLength: 50 } }}
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid xs={12} sm={3}>
             <TextField fullWidth label="ZIP Code" size="small"
               value={form.zip_code}
               onChange={txt('zip_code')}
               error={Boolean(errors.zip_code)}
               helperText={errors.zip_code}
-              inputProps={{ maxLength: 10 }}
+              slotProps={{ htmlInput: { maxLength: 10 } }}
             />
           </Grid>
 
-          <Grid item xs={12}><Divider /></Grid>
+          <Grid xs={12}><Divider /></Grid>
 
           {/* ── Clinical ── */}
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <Typography variant="subtitle2" color="text.secondary" fontWeight={700} mb={1}>
               CLINICAL
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <FormControl fullWidth size="small" required>
               <InputLabel>Status</InputLabel>
               <Select label="Status" value={form.status}
@@ -445,45 +444,46 @@ export default function PatientFormDialog({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth label="Primary Physician" size="small"
               value={form.primary_physician} onChange={txt('primary_physician')}
-              inputProps={{ maxLength: 200 }}
+              slotProps={{ htmlInput: { maxLength: 200 } }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth label="Insurance Provider" size="small"
               value={form.insurance_provider} onChange={txt('insurance_provider')} />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth label="Insurance ID" size="small"
               value={form.insurance_id} onChange={txt('insurance_id')} />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid xs={12} sm={6}>
             <TextField fullWidth label="Last Visit Date" size="small" type="date"
-              InputLabelProps={{ shrink: true }}
+              slotProps={{ inputLabel: { shrink: true }, htmlInput: { max: new Date().toISOString().split('T')[0] } }}
               value={form.last_visit_date}
               onChange={txt('last_visit_date')}
               error={Boolean(errors.last_visit_date)}
               helperText={errors.last_visit_date}
-              inputProps={{ max: new Date().toISOString().split('T')[0] }}
             />
           </Grid>
 
           {/* ── Allergies ── */}
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <TextField fullWidth label="Add Allergy" size="small"
               value={allergyInput}
               onChange={(e) => setAllergyInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addAllergy() } }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton size="small" onClick={addAllergy} disabled={!allergyInput.trim()}>
-                      <AddIcon fontSize="small" />
-                    </IconButton>
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton size="small" onClick={addAllergy} disabled={!allergyInput.trim()}>
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
               }}
               helperText="Press Enter or click + to add"
             />
@@ -499,11 +499,11 @@ export default function PatientFormDialog({
             )}
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <TextField fullWidth label="Medical Notes" size="small" multiline rows={3}
               value={form.medical_notes}
               onChange={txt('medical_notes')}
-              inputProps={{ maxLength: 5000 }}
+              slotProps={{ htmlInput: { maxLength: 5000 } }}
             />
           </Grid>
         </Grid>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  Box, Typography, Grid, Card, CardContent, CardHeader,
+  Box, Typography, Grid2 as Grid, Card, CardContent, CardHeader,
   Button, Chip, Stack, Divider, Skeleton, Alert,
   Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
   Breadcrumbs, Link, CircularProgress, Tab, Tabs,
@@ -111,7 +111,7 @@ export default function PatientDetailPage() {
         <Skeleton variant="rounded" height={48} sx={{ mt: 2, mb: 3 }} />
         <Grid container spacing={3} mt={1}>
           {[1, 2, 3, 4].map((i) => (
-            <Grid item xs={12} md={6} key={i}>
+            <Grid xs={12} md={6} key={i}>
               <Skeleton variant="rounded" height={200} />
             </Grid>
           ))}
@@ -206,7 +206,7 @@ export default function PatientDetailPage() {
       {/* Overview */}
       {activeTab === 0 && (
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
+          <Grid xs={12} md={6}>
             <SectionCard title="Demographics" icon={<PersonIcon />}>
               <InfoRow label="Date of Birth" value={formatDate(patient.date_of_birth)} />
               <InfoRow label="Age" value={`${calcAge(patient.date_of_birth)} years`} />
@@ -218,7 +218,7 @@ export default function PatientDetailPage() {
             </SectionCard>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid xs={12} md={6}>
             <SectionCard title="Contact" icon={<ContactPhoneIcon />}>
               <InfoRow label="Email" value={patient.email} />
               <InfoRow label="Phone" value={patient.phone} />
@@ -229,14 +229,14 @@ export default function PatientDetailPage() {
             </SectionCard>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid xs={12} md={6}>
             <SectionCard title="Insurance" icon={<HealthAndSafetyIcon />}>
               <InfoRow label="Provider" value={patient.insurance_provider} />
               <InfoRow label="Member ID" value={patient.insurance_id} />
             </SectionCard>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid xs={12} md={6}>
             <SectionCard title="Clinical" icon={<LocalHospitalIcon />}>
               <InfoRow label="Primary Physician" value={patient.primary_physician} />
               <InfoRow label="Last Visit" value={formatDate(patient.last_visit_date)} />
